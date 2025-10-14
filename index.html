@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Track your reading, discover new books, and get personalized recommendations with the Advanced Book Tracker."
+    />
+    <meta
+      name="keywords"
+      content="book tracker, reading list, book recommendations, Google Books, Open Library"
+    />
+    <meta name="author" content="Your Name" />
+    <title>Advanced Book Tracker</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <!-- Font Awesome (for icons) -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoIF2w3/bQ7pGFX9Uh4J0zJt/uiA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    /> -->
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style/style.css" />
+  </head>
+  <body>
+    <header class="bg-dark text-white text-center py-4 shadow-sm">
+      <div class="container">
+        <h1 class="mb-0">Advanced Book Tracker</h1>
+      </div>
+    </header>
+
+    <main class="container my-5">
+      <!-- Search Section -->
+      <section id="search-section" class="card shadow-sm mb-5 p-4">
+        <h2 class="card-title text-center mb-4">Search for Books</h2>
+        <form id="search-form" class="d-flex gap-3 mb-4" role="search">
+          <label for="search-input" class="visually-hidden"
+            >Enter book title or author</label
+          >
+          <input
+            type="text"
+            id="search-input"
+            class="form-control form-control-lg"
+            placeholder="Enter book title or author"
+            aria-label="Enter book title or author"
+            required
+          />
+          <button type="submit" class="btn btn-primary btn-lg d-flex align-items-center">
+            <i class="fas fa-search me-2"></i> Search
+          </button>
+        </form>
+
+        <div id="loading-spinner" class="d-none justify-content-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading search results...</span>
+          </div>
+          <p class="ms-3 mb-0 text-muted">Loading...</p>
+        </div>
+
+        <div
+          id="search-results"
+          class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"
+          role="list"
+        >
+          <p class="initial-message text-muted text-center w-100 p-3">
+            Start by searching for your favorite books!
+          </p>
+        </div>
+      </section>
+
+      <!-- Reading Lists Section -->
+      <section id="reading-lists-section" class="card shadow-sm mb-5 p-4">
+        <h2 class="card-title text-center mb-4">My Reading Lists</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="list-container bg-light p-3 rounded h-100">
+              <h3 class="text-center text-primary mb-3">Currently Reading</h3>
+              <div
+                id="currently-reading-list"
+                class="row row-cols-1 row-cols-lg-2 g-3 book-list"
+                role="list"
+              >
+                <p class="text-muted text-center w-100 initial-message">
+                  No books here yet. Add some!
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="list-container bg-light p-3 rounded h-100">
+              <h3 class="text-center text-info mb-3">Want to Read</h3>
+              <div
+                id="want-to-read-list"
+                class="row row-cols-1 row-cols-lg-2 g-3 book-list"
+                role="list"
+              >
+                <p class="text-muted text-center w-100 initial-message">
+                  No books here yet. Add some!
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="list-container bg-light p-3 rounded h-100">
+              <h3 class="text-center text-success mb-3">Read Books</h3>
+              <div
+                id="read-books-list"
+                class="row row-cols-1 row-cols-lg-2 g-3 book-list"
+                role="list"
+              >
+                <p class="text-muted text-center w-100 initial-message">
+                  No books here yet. Add some!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recommendations Section -->
+      <section id="recommendations-section" class="card shadow-sm p-4">
+        <h2 class="card-title text-center mb-4 d-flex align-items-center justify-content-center">
+          Recommended Books
+          <button
+            id="generate-recommendations-btn"
+            class="btn btn-outline-secondary btn-sm ms-3 d-flex align-items-center"
+            aria-label="Generate new recommendations"
+          >
+            <i class="fas fa-redo me-2"></i> Generate New
+          </button>
+        </h2>
+        <div
+          id="recommendations-list"
+          class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"
+          role="list"
+        >
+          <p class="initial-message text-muted text-center w-100 p-3">
+            Read more books to get better recommendations!
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Book Details Modal (Bootstrap Modal) -->
+    <div
+      class="modal fade"
+      id="bookDetailsModal"
+      tabindex="-1"
+      aria-labelledby="bookDetailsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="bookDetailsModalLabel">Book Details</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="modal-body">
+            <!-- Book details will be loaded here dynamically -->
+            <p class="text-center text-muted">Loading book details...</p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center" id="modal-actions">
+            <!-- Action buttons will be loaded here dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Main Application Script (ES Module) -->
+    <script src="script/app.js" type="module" defer></script>
+  </body>
+</html>

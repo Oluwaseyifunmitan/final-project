@@ -31,6 +31,7 @@
     /> -->
     <!-- Custom Styles -->
     <link rel="stylesheet" href="style/style.css" />
+    <script src="script/app.js" type="module" defer></script>
   </head>
   <body>
     <header class="bg-dark text-white text-center py-4 shadow-sm">
@@ -55,7 +56,10 @@
             aria-label="Enter book title or author"
             required
           />
-          <button type="submit" class="btn btn-primary btn-lg d-flex align-items-center">
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg d-flex align-items-center"
+          >
             <i class="fas fa-search me-2"></i> Search
           </button>
         </form>
@@ -129,7 +133,9 @@
 
       <!-- Recommendations Section -->
       <section id="recommendations-section" class="card shadow-sm p-4">
-        <h2 class="card-title text-center mb-4 d-flex align-items-center justify-content-center">
+        <h2
+          class="card-title text-center mb-4 d-flex align-items-center justify-content-center"
+        >
           Recommended Books
           <button
             id="generate-recommendations-btn"
@@ -174,7 +180,10 @@
             <!-- Book details will be loaded here dynamically -->
             <p class="text-center text-muted">Loading book details...</p>
           </div>
-          <div class="modal-footer d-flex justify-content-center" id="modal-actions">
+          <div
+            class="modal-footer d-flex justify-content-center"
+            id="modal-actions"
+          >
             <!-- Action buttons will be loaded here dynamically -->
           </div>
         </div>
@@ -188,6 +197,5 @@
       crossorigin="anonymous"
     ></script>
     <!-- Main Application Script (ES Module) -->
-    <script src="script/app.js" type="module" defer></script>
   </body>
 </html>

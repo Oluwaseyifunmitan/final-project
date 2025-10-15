@@ -81,12 +81,28 @@ export const createBookCard = (
   const author = book.volumeInfo.authors
     ? book.volumeInfo.authors.join(", ")
     : "Unknown Author";
-  const googleThumbnail = book.volumeInfo.imageLinks?.thumbnail;
-  const openLibraryCover = getOpenLibraryCover(book.volumeInfo, "M"); // Use Open Library as fallback
+  //   const googleThumbnail = book.volumeInfo.imageLinks?.thumbnail;
+  //   const openLibraryCover = getOpenLibraryCover(book.volumeInfo, "M"); // Use Open Library as fallback
 
-  // Prioritize Google Books thumbnail, then Open Library, then placeholder
+  //   // Prioritize Google Books thumbnail, then Open Library, then placeholder
+  //   const thumbnail =
+  //     googleThumbnail ||
+  //     openLibraryCover ||
+  //     "https://via.placeholder.com/128x192?text=No+Cover";
+
+  // Cover handling with HTTPS enforcement and fallback
+  let googleThumbnail = null;
+  if (book.volumeInfo.imageLinks) {
+    googleThumbnail =
+      book.volumeInfo.imageLinks.thumbnail ||
+      book.volumeInfo.imageLinks.smallThumbnail;
+  }
+  const secureThumbnail = googleThumbnail
+    ? googleThumbnail.replace("http://", "https://")
+    : null;
+  const openLibraryCover = getOpenLibraryCover(book.volumeInfo, "M");
   const thumbnail =
-    googleThumbnail ||
+    secureThumbnail ||
     openLibraryCover ||
     "https://via.placeholder.com/128x192?text=No+Cover";
 
@@ -345,7 +361,7 @@ export const showBookDetailsModal = (
     {
       name: "wantToRead",
       label: "Want to Read",
-      btnClass: "btn-infotext-white",
+      btnClass: "btn-info text-white", // This was the problematic string
     },
     { name: "readBooks", label: "Read Books", btnClass: "btn-primary" },
   ];
@@ -354,8 +370,7 @@ export const showBookDetailsModal = (
     // Book is not in any list, provide 'Add to' options
     lists.forEach((list) => {
       const button = document.createElement("button");
-      button.classList.add("btn", list.btnClass, "me-2");
-      button.classList.add("btn", list.btnClass, "mb-2");
+      button.classList.add("btn", ...list.btnClass.split(" "), "me-2", "mb-2"); // FIX IS HERE
       button.textContent = `Add to ${list.label}`;
       button.addEventListener("click", () => {
         onMoveToList(book.id, null, list.name); // fromListName is null
@@ -368,7 +383,12 @@ export const showBookDetailsModal = (
     lists.forEach((list) => {
       if (list.name !== currentListName) {
         const button = document.createElement("button");
-        button.classList.add("btn", list.btnClass, "me-2", "mb-2");
+        button.classList.add(
+          "btn",
+          ...list.btnClass.split(" "),
+          "me-2",
+          "mb-2"
+        ); // FIX IS HERE
         button.textContent = `Move to ${list.label}`;
         button.addEventListener("click", () => {
           onMoveToList(book.id, currentListName, list.name);
